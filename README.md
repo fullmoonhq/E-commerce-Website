@@ -40,7 +40,7 @@ It includes essential e-commerce features such as product management, user authe
 ## 🛠️ Tech Stack
 
 - **HTML** (58.8%) — page structure and templates
-- **Python** (34.4%) — backend logic (likely with a web framework such as Django or Flask)
+- **Python** (34.4%) — backend logic (likely with a web framework such as Django)
 - **JavaScript** (4.2%) — interactivity and dynamic UI
 - **CSS** (2.6%) — styling and layout
 
@@ -96,18 +96,14 @@ E-commerce-Website/
    ```
 
 3. **Run the development server:**
-   - If using Flask:
-     ```bash
-     export FLASK_APP=app
-     flask run
-     ```
-   - If using Django:
+4. 
+   - Using Django:
      ```bash
      python manage.py runserver
      ```
    - Open `http://localhost:5000` or `http://127.0.0.1:8000` in your browser.
 
-4. **Front-end Development:**
+5. **Front-end Development:**
    - Edit HTML templates in the `templates/` folder.
    - Update styles in `static/css/`.
    - Add/modify scripts in `static/js/`.
