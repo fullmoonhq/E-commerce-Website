@@ -1,0 +1,98 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg" style="background-color: aliceblue; color: rgb(11, 10, 10);">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  
+          <li class="nav-item">
+            <h6><a class="nav-link" aria-current="page" href="/"> HOME ></a></h6>
+          </li>
+          <li class="nav-item">  
+            <h6><a class="nav-link active" href="/vieworder"> ORDER DETAILS </a></h6>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+<div class="container mt-3">     
+    <div class="row ">
+        <div class="col-md-8 "> 
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5>ORDER DETAILS</h5>
+                    <hr>
+                    {% if orderitems %}
+                    <table class="table table-bordereds ">
+                        <thead class="text-center">
+                            <th></th>
+                            <th>Product</th>
+                            <th> Quantity</th>
+                            <th>Price</th>
+                            <th>Tracking Id</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                        </thead>
+                        <tbody>
+                            {%for item in orderitems %}
+                            <tr class="text-center"> 
+                                <td><img class="me-2" src="/media/{{item.product.image}}" alt="image" height="100px" width="100px"></td>
+                                <td>{{item.product.name}}</td>
+                                <td>{{item.quantity}}</td>
+                                <td>Rs.{{item.price|stringformat:'d' }}</td>
+                                <td>{{order.trackingid}}</td>
+                                <td>{{order.created_on|slice:'0:13'}}</td>
+                                <td>{{order.status }}</td>  
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+
+                    </table>
+
+                    <label> PRICE DETAILS </label>
+                    <hr>
+                    
+                    <label >Order Total</label> <span class="float-end">Rs. {{ordertotal|stringformat:'d'}}</span>
+    
+                    <br>
+                    <label class="mt-2">Shipping Charges </label><span class="float-end text-center mt-2 ">Rs. 40</span>
+                    <hr>
+                    <h6>Total Amount<span class="float-end text-center">Rs. {{total|stringformat:'d'}}</span></h6>
+
+            
+
+                    {%else%}
+
+                    <span class="text-center"> You have no orders !</span>
+
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5>SHIPPING ESTIMATES</h5>
+                    <hr>
+
+                    {{order.fname}} {{order.lname}}<br>
+                    {{order.phone}}<br>
+                    {{order.address}}<br>
+                    {{order.city}}, {{order.state}}, {{order.country}} - {{order.zipcode}}
+    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+</div>
+
+{%endblock%}
+
+       

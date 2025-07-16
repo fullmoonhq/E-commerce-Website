@@ -1,0 +1,107 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav mx-2">
+
+                <li class="nav-item">
+                    <h6><a class="nav-link" href="/"> HOME > </a></h6>
+                </li>
+    
+                <li class="nav-item">  
+                  <h6><a class="nav-link" href="/category"> CATEGORY > </a></h6>
+                </li>
+                
+                <li class="nav-item">  
+                    <h6><a class="nav-link" href="/viewbycategory/{{product.category.name}}">{{product.category.name}} >  </a></h6>
+                </li>
+
+                <li class="nav-item">  
+                    <h6><a class="nav-link active" href="/viewproduct/{{product.id}}">{{product.name}}</a></h6>
+                </li>
+
+            </ul>  
+        </div>         
+    </nav>
+
+
+
+    <div class="row">
+        
+            <div class="card shadow pdata">
+                <div class="card-body">
+
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-4 ">   
+                            <image src="/media/{{product.image}}" alt="abc.jpg" width="400px" height="400px"/>
+                        </div>
+                        <div class="col-md-8">
+                            <h3 class="mb-0">
+                                {{product.name}}
+                            </h3>
+
+                            <br>
+                            
+                            <label class="fw-bold me-3 price">Rs. {{product.selling_price|stringformat:'d'}}</label>
+                            <label><s>Rs. {{product.original_price|stringformat:'d'}}</label></s>
+                            
+                            <br>
+                    
+                            <div class="row mt-2">
+                                
+                                <div class="col-md-3">
+
+                                    <input type="hidden" value="{{product.id}}" class="pid"/>
+
+                                    <br>
+
+                                    <div class="input-group text-center mb-3" style="width:130px">
+                                        <button class="input-group-text decrement-btn changeqty">-</button>
+                                        <input type="text" name="qty" class="form-control text-center qty" value="1">
+                                        <button class="input-group-text increment-btn changeqty">+</button>
+                                    </div>
+
+                                </div>
+
+                                
+
+                                <div class="col-md-9">
+                                    <br>
+                                    {% if product.quantity > 0 %}
+                                    <button type="button" class="btn btn-dark me-3 float-start cart">Add to Cart</button>
+                                    <button type="button" class="btn btn-dark me-3 float-start wishlist">Add to Wishlist</button>
+                                    {%else%}
+                                    <button class="btn btn-light me-3 float-start"><h6 style="color: red;">Out of Stock</h6></button>
+                                    <button type="button" class="btn btn-dark me-3 float-start wishlist">Add to Wishlist</button>
+                                    {%endif%}
+                                </div>
+
+                                
+
+                                <h6><br>Product Details</h6>
+                                <p>{{product.details}}</p>
+
+                               
+
+                                <h6> <br>Expiry</h6> 
+                                <p>{{product.expiry}}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

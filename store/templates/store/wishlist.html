@@ -1,0 +1,95 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg" style="background-color: aliceblue; color: rgb(11, 10, 10);">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  
+          <li class="nav-item">
+            <h6><a class="nav-link" aria-current="page" href="/"> HOME ></a></h6>
+          </li>
+          <li class="nav-item">  
+            <h6><a class="nav-link active" href="/wishlist">WISHLIST</a></h6>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 my-4">
+    
+        {% if wishlist %}
+            {% for item in wishlist %}
+            
+                <div class="col-md-3 ">
+                    <div class="card pdata">
+                        <div class="card-body wishlistitems">
+
+                            <input type="hidden" class="pid" value="{{item.product_id}}">
+
+                            {% csrf_token %}
+
+                            <a href="/viewproduct/{{item.product.id}}">
+                                <div class="category-image text-center">
+                                    <img src="/media/{{item.product.image}}" alt="image" height="400px" width="200px"/>
+                                </div>
+                            </a>
+
+                            <br>
+
+                            <label class="my-2">{{item.product.name|slice:'0:30'}}...</label>
+                            
+                            <br> 
+
+                            <label class="fw-bold me-3 price">Rs. {{item.product.selling_price|stringformat:'d'}}</label>
+                            <label class="me-3"><s>Rs. {{item.product.original_price|stringformat:'d'}}</label></s>
+                            
+                            <br><br>
+
+                            <div class="button row " style="margin-left: 0mm; margin-right: 1mm;" >
+                              <button type="button" class="d-grid btn btn-dark gap-2 p-1 m-1 remove-wishlist-item fw-bold"> REMOVE </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor%}
+            {%else%}
+
+<br>
+<br>
+<div class="container my-4">
+  <div class="row justify-content-center">
+      <div class="col-md-6">
+          <div>
+              <div class="card mt-3 shadow">
+                  <div class="card-body ">
+
+
+                      <h4>Wishlist is Empty..!</h4>
+                      <a href="/"> Go Back </a>  
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<br><br><br><br><br><br><br>
+
+
+            {%endif%}
+
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+

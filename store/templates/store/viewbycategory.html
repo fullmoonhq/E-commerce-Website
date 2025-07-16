@@ -1,0 +1,46 @@
+{% extends 'store/main.html' %}
+
+{%block nav%}
+
+<nav class="navbar navbar-expand-lg" style="background-color: aliceblue; color: rgb(11, 10, 10);">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <h6><a class="nav-link" aria-current="page" href="/"> HOME ></a></h6>
+        </li>
+        <li class="nav-item">  
+          <h6><a class="nav-link" href="/category">CATEGORY > </a></h6>
+        </li>
+        <li class="nav-item">  
+          <h6><a class="nav-link active" href="/viewbycategory/{{product.category}}">{{product.category.name}} </a></h6>
+      </li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+{%endblock nav%}
+
+{% block content %}
+  
+
+  <div class='row mt-2 ' style="margin-left: 15px;">
+
+    {% for product in products %}
+    
+      <div class="card" style="width: 18rem">
+        <a href="/viewproduct/{{product.id}}"><img src="/media/{{product.image}}" class="card-img-top" alt="image" height="300px" ></a>
+        <div class="card-body">
+          <h6 class="card-text">{{product.name}}</h6>
+          <b>Rs.{{product.selling_price|stringformat:'d'}}</b>
+        </div>
+      </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+

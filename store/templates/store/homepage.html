@@ -1,0 +1,63 @@
+{% extends 'store/main.html' %}
+
+{% block slider%}
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+<div class="carousel-inner">
+  <div class="carousel-item active">
+    <a href="/category" ><img src="/media/images/1.webp"  class="d-block w-100" alt="image" ></a>
+  </div>
+  <div class="carousel-item">
+    <a href="/category" ><img src="/media/images/2.webp" class="d-block w-100" alt="image" ></a>
+  </div>
+  <div class="carousel-item">
+    <a href="/category" > <img src="/media/images/3.webp" class="d-block w-100" alt="image" ></a>
+  </div>
+  <div class="carousel-item">
+    <a href="/category" ><img src="/media/images/4.webp" class="d-block w-100" alt="image" ></a>
+  </div>
+  <div class="carousel-item">
+    <a href="/category" ><img src="/media/images/5.webp" class="d-block w-100" alt="image" ></a>
+  </div>
+  <div class="carousel-item">
+    <a href="/category" ><img src="/media/images/6.webp" class="d-block w-100" alt="image" ></a>
+  </div>
+</div>
+</div>
+
+{%endblock slider%}
+
+
+
+{% block content %}
+
+  {% for brand, range in allbrands %}
+
+  
+  <div class="container-fluid text-center mt-2" style="background-color: rgb(213, 216, 216);">
+    <br>
+    <h4>BEST OF EXCLUSIVE {{brand.0.category}} BRANDS</h4>
+    <br>
+  </div>
+  
+
+  <div class='row mt-2 ' style="margin-left: 15px;">
+
+    {% for i in brand %}
+    
+      <div class="card" style="width: 18rem">
+        <a href="viewbycategory/{{i.category}}"><img src="/media/{{i.image}}" class="card-img-top" alt="image" height="300px"></a>
+        <div class="card-body text-white" style="background-color: rgb(18, 20, 56);">
+          <h4 class="card-text text-center">{{i.name}}</h4>
+        </div>
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+  {% endfor %}
+
+{% endblock %}
+
+
+

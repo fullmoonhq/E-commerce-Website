@@ -1,0 +1,244 @@
+{%extends 'store/main.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg" style="background-color: aliceblue; color: rgb(11, 10, 10);">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  
+          <li class="nav-item">
+            <h6><a class="nav-link" aria-current="page" href="/"> HOME ></a></h6>
+          </li>
+          <li class="nav-item">  
+            <h6><a class="nav-link active" href="/checkout">CHECKOUT</a></h6>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+ <div class="container mt-3">
+    <form action="/placeorder" method="post">
+        {% csrf_token %}
+        <div class="row ">
+            <div class="col-md-7 ">  
+                    <div class="card shadow">
+                        
+                        <div class="card-body">
+                            <h5> SHIPPING DETAILS</h5>
+                            <hr>
+                            {%if useraccount %}
+                           <label>DEFAULT ADDRESS</label> 
+                            <hr>
+
+                            {{request.user.first_name}} {{request.user.last_name}}<br>
+                            {{useraccount.phone}}<br>
+                            {{useraccount.address}}<br>
+                            {{useraccount.city}},{{useraccount.state}} - {{useraccount.zipcode}}
+
+                            <hr>
+
+                            {%endif%}
+                            <label>EDIT OR ADD NEW ADDRESS</label>
+                            <hr>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" value="{{request.user.first_name}}" class="form-control" name="fname" placeholder=" First Name " required>
+                                    </div>
+
+                                    <div class="col-md-6">                             
+                                        <input type="text" value="{{request.user.last_name}}" class="form-control" name="lname" placeholder=" Last Name " required>
+                                    </div>
+
+                                    <div class="col-md-6  mt-3">
+                                        <input type="email" value="{{request.user.email}}" class="form-control" name="email" placeholder="Email Id" required>
+                                    </div>
+
+                                    <div class="col-md-6  mt-3">
+                                        <input type="phone" value="{{useraccount.phone}}" class="form-control" name="phone" placeholder=" Contact Number " required>
+                                    </div>
+
+                                    <div class="col-md-12  mt-3">
+                                        <textarea class="form-control" name="address" value="{{useraccount.address}}" placeholder="  Address " required></textarea>
+                                    </div>
+
+                                    <div class="col-md-6  mt-3">
+                                        <input type="text" value="{{useraccount.city}}" class="form-control" name="city" placeholder=" City " required>
+                                    </div>
+
+                                    <div class="col-md-6  mt-3">
+                                        <input type="text" value="{{useraccount.state}}" class="form-control" name="state" placeholder=" State " required>
+                                    </div>
+
+                                    <div class="col-md-6  mt-3">
+                                        <input type="text" value="{{useraccount.country}}" class="form-control" name="country" placeholder=" Country " required>
+                                    </div>
+
+                                    <div class="col-md-6  mt-3">
+                                        <input type="text" value="{{useraccount.zipcode}}" class="form-control" name="zipcode" placeholder=" Zip Code " required>
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5>DELIVERY ESTIMATES</h5>
+                        <hr>
+                        {% if cartitems %}
+                        <table class="table table-bordereds ">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cartitems %}
+                                <tr>
+                                    <td><img class="me-2" src="/media/{{item.product.image}}" alt="image" height="50px" width="50px"></td>
+                                    <td>{{item.product.name|slice:':30'}}...</td>
+                                    <td class="text-center">{{item.quantity}}</td>
+                                    <td>Rs.{% widthratio item.quantity 1 item.product.selling_price|stringformat:'d' %}</td>
+                                </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+
+                        <label> PRICE DETAILS </label>
+                        <hr>
+                        <label >Items Total</label> <span class="float-end">Rs. {{totalamount|stringformat:'d'}}</span>
+                        <br>
+                        <label class="mt-2">Shipping Charges </label><span class="float-end text-center mt-2 ">Rs. 40</span>
+                        <hr>
+                        <h6>Total Amount<span class="float-end text-center">Rs.{{total|stringformat:'d'}}</span></h6>
+                        <hr>
+
+                        <input type="hidden" value="Cash On Delivery" name="paymentmode">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-dark shadow w-100 fw-bold"> Cash on Delivery </button>
+                            <div id="paypal-button-container"></div>
+        
+                        </div>
+
+                        {%else%}
+
+                        <span class="text-center">Your Cart is Empty !</span>
+
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <br><br>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AVQmRPK2eFbcAa5eNJTi37IxdZAGqnvI2671mrx1-afZ4Rxj7tFGaHRLh7DmbOe5u6uoW5SCdjLBmtMO&currency=USD"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    paypal.Buttons({
+        style:{
+            layout:'vertical',
+            color:'black',
+        },
+        onClick : (data, actions)  => {
+            var fname = $("[name='fname']").val();
+            var lname = $("[name='lname']").val();
+            var email = $("[name='email']").val();
+            var phone = $("[name='phone']").val();
+            var address = $("[name='address']").val();
+            var city = $("[name='city']").val();
+            var state = $("[name='state']").val();
+            var country = $("[name='country']").val();
+            var zipcode = $("[name='zipcode']").val();
+            let csrftoken = $('input[name=csrfmiddlewaretoken]').val();
+
+            if(fname==""|| lname==""||email==""|| phone==""||address==""|| city==""||state==""|| country==""||zipcode=="")
+            {
+                swal("Alert", "All fields are mandatory", "warning")
+                return false;
+            }
+            else
+            {
+                return true
+            }
+        },
+      // Sets up the transaction when a payment button is clicked
+      createOrder: (data, actions) =>{
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: 0.01//'{{total|stringformat:"d"}}' // Can also reference a variable or function
+            }
+          }]
+        });
+      },
+      // Finalize the transaction after payer approval
+      onApprove: (data, actions) => {
+        return actions.order.capture().then(function(orderData) {
+          // Successful capture! For dev/demo purposes:
+          //console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+          //alert(orderData.id)
+          //const transaction = orderData.purchase_units[0].payments.captures[0];
+          //alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+          // When ready to go live, remove the alert and show a success message within this page. For example:
+          // const element = document.getElementById('paypal-button-container');
+          // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+          // Or go to another URL:  actions.redirect('thank_you.html');
+
+            var fname = $("[name='fname']").val();
+            var lname = $("[name='lname']").val();
+            var email = $("[name='email']").val();
+            var phone = $("[name='phone']").val();
+            var address = $("[name='address']").val();
+            var city = $("[name='city']").val();
+            var state = $("[name='state']").val();
+            var country = $("[name='country']").val();
+            var zipcode = $("[name='zipcode']").val();
+            let csrftoken = $('input[name=csrfmiddlewaretoken]').val();
+
+            data = {
+                
+                'fname' : fname,
+                'lname' : lname,
+                'email' : email,
+                'phone' : phone,
+                'address' : address,
+                'city' : city,
+                'state' : state,
+                'country' : country,
+                'zipcode' : zipcode,
+                'paymentmode': 'Paid with Paypal',
+                'paymentid': orderData.id,
+                'csrfmiddlewaretoken': csrftoken
+           }
+           
+           $.ajax({
+                method:'POST',
+                url:'/placeorder',
+                data:data,
+                success:(function(result){
+                    swal("Congratulations", result.status, "success").then((value) => {
+                        window.location.href = '/myorders'
+                        });
+                }) 
+            });
+
+            $.ajax();     
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+
+{%endblock%}

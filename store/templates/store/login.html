@@ -1,0 +1,78 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg" style="background-color: aliceblue; color: rgb(11, 10, 10);">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  
+          <li class="nav-item">
+            <h6><a class="nav-link" aria-current="page" href="/"> HOME ></a></h6>
+          </li>
+          <li class="nav-item">  
+            <h6><a class="nav-link active" href="/userlogin">LOGIN</a></h6>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+ <div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div>
+                <div class="card mt-3 shadow">
+                    <div class="card-body">
+
+                        <form class="my-4" action="" method="post">
+
+                            {% csrf_token %}
+
+                            <div class="text-center">
+                                <h4>LOGIN or REGISTER</h4>
+                                <hr>
+                            </div>
+                    
+                            <div class="form-group"> 
+                                <input type="text" class="form-control" name="uname" placeholder=" Username" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <input type="password" class="form-control" name="pwd" placeholder=" Password " required>
+                            </div>
+
+                            <br>
+
+                            <div>
+                              <small>Forgot Password ? <a href="/password-reset" class="text-primary">Reset Here</a></small>
+                            </div>
+
+                            <br>
+                            
+                            <div class="d-grid gap-2">
+                            <button type="submit" class="btn shadow btn-dark px-4 fw-bold"> LOGIN </button>
+                            </div>
+
+                            <br><hr>
+
+                            <div class="text-center fw-bold">
+                                <small>New User ? <a href="/signup" class="text-primary">Register Here</a></small>
+                            </div>
+
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                <p class="alert alert-danger my-3">{{error}}</p>
+                                {% endfor%}
+                            {% endif %}
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
