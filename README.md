@@ -132,7 +132,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 📧 Contact
 
-For questions, feedback, or collaboration, open an [issue](https://github.com/fullmoonhq/E-commerce-Website/issues)  
+For questions, feedback, or collaboration, open an [issue](https://github.com/mdmbypoonam/E-commerce-Website/issues)  
 
 ---
 
